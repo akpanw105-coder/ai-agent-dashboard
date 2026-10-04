@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NexusAI - Autonomous Agent Swarm Management Platform</title>
+<!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS v3 -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config using defined Design Tokens -->
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-tertiary-fixed": "#002113",
+            "surface-container": "#1d1f27",
+            "surface-container-high": "#272a32",
+            "on-tertiary": "#003824",
+            "on-secondary-fixed": "#001f26",
+            "surface-container-lowest": "#0b0e15",
+            "on-primary-fixed": "#23005c",
+            "on-background": "#e1e2ec",
+            "secondary-container": "#03b5d3",
+            "on-secondary-container": "#00424e",
+            "primary-fixed-dim": "#d0bcff",
+            "tertiary": "#4edea3",
+            "secondary-fixed-dim": "#4cd7f6",
+            "tertiary-fixed-dim": "#4edea3",
+            "surface-variant": "#32353d",
+            "on-tertiary-container": "#00311f",
+            "primary-container": "#a078ff",
+            "inverse-surface": "#e1e2ec",
+            "on-secondary-fixed-variant": "#004e5c",
+            "outline-variant": "#494454",
+            "on-tertiary-fixed-variant": "#005236",
+            "primary": "#d0bcff",
+            "tertiary-container": "#00a572",
+            "primary-fixed": "#e9ddff",
+            "on-surface-variant": "#cbc3d7",
+            "error": "#ffb4ab",
+            "on-secondary": "#003640",
+            "inverse-on-surface": "#2d3038",
+            "on-surface": "#e1e2ec",
+            "on-primary-fixed-variant": "#5516be",
+            "on-error-container": "#ffdad6",
+            "surface-dim": "#10131a",
+            "surface-container-low": "#191b23",
+            "surface-bright": "#363941",
+            "background": "#10131a",
+            "surface-tint": "#d0bcff",
+            "secondary-fixed": "#acedff",
+            "secondary": "#4cd7f6",
+            "on-primary-container": "#340080",
+            "outline": "#958ea0",
+            "tertiary-fixed": "#6ffbbe",
+            "surface-container-highest": "#32353d",
+            "surface": "#10131a",
+            "error-container": "#93000a",
+            "on-primary": "#3c0091",
+            "on-error": "#690005",
+            "inverse-primary": "#6d3bd7"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "gutter": "1rem",
+            "gutter-lg": "1.5rem",
+            "margin-desktop": "2rem",
+            "space-xl": "2rem",
+            "space-xs": "0.25rem",
+            "space-sm": "0.5rem",
+            "margin-mobile": "1rem",
+            "margin": "1.5rem",
+            "space-lg": "1.5rem",
+            "space-md": "1rem"
+          },
+          "fontFamily": {
+            "headline-lg": ["Plus Jakarta Sans"],
+            "code-body": ["JetBrains Mono"],
+            "code-display": ["JetBrains Mono"],
+            "label-caps": ["JetBrains Mono"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "headline-xl-mobile": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "headline-xl": ["Plus Jakarta Sans"],
+            "code-sm": ["JetBrains Mono"],
+            "body-md": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "code-body": ["13px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400" }],
+            "code-display": ["15px", { "lineHeight": "22px", "letterSpacing": "-0.01em", "fontWeight": "500" }],
+            "label-caps": ["10px", { "lineHeight": "14px", "letterSpacing": "0.08em", "fontWeight": "600" }],
+            "headline-md": ["18px", { "lineHeight": "26px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "letterSpacing": "-0.005em", "fontWeight": "400" }],
+            "headline-xl-mobile": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "body-sm": ["12px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "400" }],
+            "headline-xl": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.025em", "fontWeight": "700" }],
+            "code-sm": ["11px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500" }],
+            "body-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    /* Cybernetic Custom Scrollbars */
+    ::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0b0e15;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #272a32;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #494454;
+    }
+    /* Subtle neon scanline & grid effects */
+    .bg-grid-cyber {
+      background-size: 32px 32px;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface antialiased selection:bg-primary selection:text-on-primary min-h-screen flex flex-col overflow-x-hidden font-body-md text-body-md">
+<!-- TopNavBar (Shared Component Anchor) -->
+<header class="bg-surface-container-low dark:bg-surface-container-lowest docked full-width top-0 z-40 shadow-sm backdrop-blur-md sticky border-b border-outline-variant/20 flex justify-between items-center w-full px-6 py-2.5 h-16">
+<!-- Left Section: Logo & Cluster Telemetry & Search -->
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-[0_0_12px_rgba(139,92,246,0.35)]">
+<span class="material-symbols-outlined text-surface-container-lowest font-bold text-[20px]">smart_toy</span>
+</div>
+<span class="font-headline-lg text-headline-lg font-bold text-on-surface dark:text-on-surface tracking-tight">NexusAI</span>
+<span class="px-2 py-0.5 rounded-full bg-primary/10 border border-primary/20 text-primary font-label-caps text-label-caps tracking-widest font-semibold uppercase">v4.2 PRO</span>
+</div>
+<!-- Live Cluster Operational Pill -->
+<div class="hidden xl:flex items-center gap-2 px-3 py-1 rounded-full bg-surface-container-high/60 border border-outline-variant/30 font-code-sm text-code-sm text-on-surface-variant">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-tertiary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-tertiary"></span>
+</span>
+<span class="text-tertiary font-medium">99.98% Operational</span>
+<span class="text-outline">•</span>
+<span>42 Active Nodes</span>
+</div>
+<!-- Quick Omnibar Search -->
+<div class="relative w-72 lg:w-96">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[18px]">search</span>
+<input class="w-full h-9 pl-9 pr-12 rounded-lg bg-surface-container-lowest border border-outline-variant/40 font-code-sm text-code-sm text-on-surface placeholder:text-outline focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary/50 transition-all" placeholder="Search swarms, agents, execution logs... [⌘K]" type="text"/>
+<kbd class="absolute right-2.5 top-1/2 -translate-y-1/2 px-1.5 py-0.5 rounded bg-surface-container border border-outline-variant/50 font-label-caps text-label-caps text-outline">⌘K</kbd>
+</div>
+</div>
+<!-- Center Navigation Links -->
+<nav class="hidden 2xl:flex items-center gap-6">
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface pb-1 transition-colors font-body-sm text-body-sm" href="#docs">Docs</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface pb-1 transition-colors font-body-sm text-body-sm" href="#api">API Reference</a>
+<a class="text-secondary dark:text-secondary-fixed border-b-2 border-secondary font-medium pb-1 font-body-sm text-body-sm flex items-center gap-1.5" href="#status">
+<span class="h-1.5 w-1.5 rounded-full bg-secondary animate-pulse"></span>
+        Status
+      </a>
+</nav>
+<!-- Right Section: Trailing Actions -->
+<div class="flex items-center gap-3">
+<!-- Environment Dropdown Chip -->
+<div class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-surface-container border border-outline-variant/30 text-on-surface font-code-sm text-code-sm hover:bg-surface-container-high transition-colors cursor-pointer">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span>Production-East-1</span>
+<span class="material-symbols-outlined text-[16px] text-outline">expand_more</span>
+</div>
+<!-- Icon Actions -->
+<div class="flex items-center border-l border-outline-variant/30 pl-3 gap-1">
+<button class="p-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all active:scale-[0.98]" title="Quick Terminal">
+<span class="material-symbols-outlined text-[20px]">terminal</span>
+</button>
+<button class="p-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all active:scale-[0.98] relative" title="Notifications">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-4 h-4 rounded-full bg-error-container text-error text-[10px] font-bold flex items-center justify-center font-code-sm border border-error/30">3</span>
+</button>
+<button class="p-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all active:scale-[0.98]" title="Help &amp; Support">
+<span class="material-symbols-outlined text-[20px]">help</span>
+</button>
+</div>
+<!-- Deploy Swarm Primary Action Button -->
+<button class="hidden sm:flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-primary-container to-secondary text-surface-container-lowest font-headline-md text-[13px] font-semibold hover:shadow-[0_0_16px_rgba(139,92,246,0.35)] transition-all active:scale-[0.98]">
+<span class="material-symbols-outlined text-[18px]">add_circle</span>
+<span>Deploy Swarm</span>
+</button>
+<!-- Profile Avatar -->
+<div class="flex items-center gap-2 pl-2 border-l border-outline-variant/30">
+<div class="relative">
+<div class="w-8 h-8 rounded-full ring-1 ring-primary/40 p-0.5 bg-surface-container-high overflow-hidden">
+<img class="w-full h-full object-cover rounded-full" data-alt="Modern cyberpunk security operator avatar portrait with high-tech glowing cybernetic optical headset in dark obsidian studio setting, electric cyan ambient rim light and subtle neon violet accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCP7-KZLCXsrFWTjbWIUmMKKlAapx2VRWbDGHPg4dYsAfYQlf44cf-NOXMl0-6YSfON663mUCANiAYdpDbxQUHp2-ApZJobshraIVBubyObypNSZQLvGO-NRsA4ufM4yz3PVBakKVLsQIe266VbGfYzZsph75YhFwjZFKIIsT-BUzlbHCUobMzofjTIGVAJpLV412F8OXFpb9iZc58nSwEHTQlO9zMNxuk0CLsnBDlYma9sUmbkXncG958cmTgvH9qWpzBjP62lQiY"/>
+</div>
+<span class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-tertiary ring-2 ring-surface-container-lowest"></span>
+</div>
+</div>
+</div>
+</header>
+<!-- App Body Layout: Sidebar + Canvas -->
+<div class="flex flex-1 relative overflow-hidden">
+<!-- SideNavBar (Shared Component Anchor) -->
+<aside class="bg-surface-container-low dark:bg-surface-container-lowest docked left-0 top-0 h-[calc(100vh-4rem)] w-60 z-30 border-r border-outline-variant/20 shadow-md backdrop-blur-xl flex flex-col justify-between p-4 shrink-0 hidden md:flex">
+<!-- Side Nav Top Header -->
+<div class="space-y-6">
+<div class="flex items-center gap-3 px-2 py-1.5 border-b border-outline-variant/20 pb-3">
+<div class="w-9 h-9 rounded-lg bg-surface-container-high flex items-center justify-center text-secondary border border-secondary/20 shadow-[0_0_8px_rgba(76,215,246,0.15)]">
+<span class="material-symbols-outlined text-[20px]">hub</span>
+</div>
+<div>
+<h3 class="font-headline-md text-body-md font-bold text-on-surface">Swarm Control</h3>
+<p class="font-code-sm text-code-sm text-outline">v4.2.0 • Active</p>
+</div>
+</div>
+<!-- Navigation Tab Links (Exact labels & semantic active match to Overview) -->
+<nav class="space-y-1">
+<!-- Overview (Active) -->
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-surface-container-highest text-secondary border-l-2 border-secondary font-semibold font-body-sm text-body-sm transition-colors duration-150" href="#">
+<span class="material-symbols-outlined text-[19px]">dashboard</span>
+<span>Overview</span>
+</a>
+<!-- Agent Swarms -->
+<a class="flex items-center justify-between px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high/50 hover:text-on-surface font-normal font-body-sm text-body-sm transition-colors duration-150 group" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[19px] group-hover:text-primary transition-colors">smart_toy</span>
+<span>Agent Swarms</span>
+</div>
+<span class="px-1.5 py-0.2 rounded bg-surface-container-high text-primary font-code-sm text-[11px] font-semibold border border-primary/20">18</span>
+</a>
+<!-- Execution Logs -->
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high/50 hover:text-on-surface font-normal font-body-sm text-body-sm transition-colors duration-150 group" href="#">
+<span class="material-symbols-outlined text-[19px] group-hover:text-secondary transition-colors">terminal</span>
+<span>Execution Logs</span>
+</a>
+<!-- Workflow Studio -->
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high/50 hover:text-on-surface font-normal font-body-sm text-body-sm transition-colors duration-150 group" href="#">
+<span class="material-symbols-outlined text-[19px] group-hover:text-secondary transition-colors">account_tree</span>
+<span>Workflow Studio</span>
+</a>
+<!-- Integrations -->
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high/50 hover:text-on-surface font-normal font-body-sm text-body-sm transition-colors duration-150 group" href="#">
+<span class="material-symbols-outlined text-[19px] group-hover:text-secondary transition-colors">hub</span>
+<span>Integrations</span>
+</a>
+<!-- Analytics -->
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high/50 hover:text-on-surface font-normal font-body-sm text-body-sm transition-colors duration-150 group" href="#">
+<span class="material-symbols-outlined text-[19px] group-hover:text-secondary transition-colors">monitoring</span>
+<span>Analytics</span>
+</a>
+<!-- Settings -->
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high/50 hover:text-on-surface font-normal font-body-sm text-body-sm transition-colors duration-150 group" href="#">
+<span class="material-symbols-outlined text-[19px] group-hover:text-secondary transition-colors">settings</span>
+<span>Settings</span>
+</a>
+</nav>
+</div>
+<!-- Side Nav Bottom Zone: Cluster Compute Quota & Footer Tabs -->
+<div class="space-y-4 pt-4 border-t border-outline-variant/20">
+<!-- Cluster Compute Quota Card -->
+<div class="p-3 rounded-lg bg-surface-container border border-outline-variant/30 space-y-2">
+<div class="flex items-center justify-between text-xs font-code-sm">
+<span class="text-on-surface font-medium flex items-center gap-1.5">
+<span class="material-symbols-outlined text-secondary text-[16px]">memory</span>
+              GPU Allocation
+            </span>
+<span class="text-secondary font-bold">76%</span>
+</div>
+<!-- Progress Bar -->
+<div class="h-1.5 w-full bg-surface-container-lowest rounded-full overflow-hidden border border-white/5">
+<div class="h-full bg-gradient-to-r from-primary to-secondary rounded-full shadow-[0_0_8px_#06b6d4]" style="width: 76%"></div>
+</div>
+<div class="flex justify-between items-center text-[10px] font-code-sm text-outline">
+<span>Cluster-East-A</span>
+<span>24.3 / 32 TFLOPS</span>
+</div>
+</div>
+<!-- Footer Navigation Links -->
+<div class="space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high/50 hover:text-on-surface font-normal font-body-sm text-body-sm transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]">menu_book</span>
+<span>Documentation</span>
+</a>
+<button class="w-full flex items-center justify-between px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high/50 hover:text-on-surface font-normal font-body-sm text-body-sm transition-colors">
+<span class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[18px]">chevron_left</span>
+<span>Collapse Sidebar</span>
+</span>
+<kbd class="font-code-sm text-[10px] text-outline">[</kbd>
+</button>
+</div>
+</div>
+</aside>
+<!-- Main Canvas Scrollable Area -->
+<main class="flex-1 overflow-y-auto bg-surface bg-grid-cyber p-4 md:p-6 lg:p-8 space-y-6">
+<!-- Section 1: Dashboard Header Banner & Action Dock -->
+<section class="flex flex-col xl:flex-row xl:items-center justify-between gap-4 pb-2 border-b border-outline-variant/20">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="px-2 py-0.5 rounded bg-tertiary/10 border border-tertiary/20 text-tertiary font-code-sm text-[11px] font-semibold flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary animate-ping"></span>
+              CLUSTER ONLINE
+            </span>
+<span class="font-code-sm text-code-sm text-outline">Last synced: Just now (Live WebSocket)</span>
+</div>
+<h1 class="font-headline-xl text-headline-xl font-bold tracking-tight text-on-surface">
+            Autonomous Swarm Orchestration
+          </h1>
+<p class="font-body-md text-body-md text-on-surface-variant mt-0.5">
+            Live telemetry &amp; distributed reasoning across 4 clusters
+          </p>
+</div>
+<!-- Controls: Timeframe Range, Cluster Filter & Deploy CTA -->
+<div class="flex flex-wrap items-center gap-3">
+<!-- Timeframe pills -->
+<div class="flex items-center p-1 bg-surface-container-low border border-outline-variant/30 rounded-lg font-code-sm text-code-sm">
+<button class="px-2.5 py-1 rounded bg-surface-container-highest text-secondary font-semibold">1H</button>
+<button class="px-2.5 py-1 text-on-surface-variant hover:text-on-surface transition-colors">6H</button>
+<button class="px-2.5 py-1 text-on-surface-variant hover:text-on-surface transition-colors">24H</button>
+<button class="px-2.5 py-1 text-on-surface-variant hover:text-on-surface transition-colors">7D</button>
+</div>
+<!-- Cluster Filter Selector -->
+<div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-container-low border border-outline-variant/30 text-on-surface font-body-sm text-body-sm hover:border-outline transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-[16px] text-outline">filter_alt</span>
+<span>All Swarms</span>
+<span class="material-symbols-outlined text-[16px] text-outline">expand_more</span>
+</div>
+<!-- Auto-refresh Pill -->
+<div class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-container-low border border-outline-variant/30 font-code-sm text-code-sm text-on-surface-variant">
+<span class="w-2 h-2 rounded-full bg-tertiary animate-pulse"></span>
+<span>Auto-refresh 5s</span>
+</div>
+<!-- Prominent CTA Deploy Autonomous Agent Button -->
+<button class="flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-primary-container via-primary to-secondary text-surface-container-lowest font-headline-md text-body-md font-bold shadow-[0_0_20px_rgba(160,120,255,0.4)] hover:shadow-[0_0_28px_rgba(76,215,246,0.6)] active:scale-[0.98] transition-all">
+<span class="material-symbols-outlined text-[20px] font-bold">add</span>
+<span>Deploy New Autonomous Agent</span>
+</button>
+</div>
+</section>
+<!-- Section 2: Executive Metrics Row (4 High-Density Glass Telemetry Cards) -->
+<section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<!-- Metric 1: Active Swarms -->
+<div class="p-4 rounded-xl bg-surface-container-low/80 backdrop-blur-md border border-outline-variant/30 hover:border-primary/40 transition-all duration-200 group">
+<div class="flex items-center justify-between text-on-surface-variant mb-2">
+<span class="font-code-sm text-code-sm uppercase tracking-wider text-outline font-semibold">Active Swarms</span>
+<div class="p-1.5 rounded-lg bg-surface-container text-primary group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[18px]">hub</span>
+</div>
+</div>
+<div class="flex items-baseline justify-between mb-3">
+<div>
+<span class="font-headline-xl text-headline-xl font-bold text-on-surface tracking-tight">18</span>
+<span class="font-code-sm text-code-sm text-outline ml-1">/ 20 cap</span>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-tertiary/10 border border-tertiary/20 text-tertiary font-code-sm text-code-sm font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">arrow_upward</span>
+              +14%
+            </span>
+</div>
+<!-- Sparkline representation & node breakdown -->
+<div class="space-y-1.5 pt-2 border-t border-outline-variant/20">
+<div class="flex justify-between items-center text-xs font-code-sm">
+<span class="text-on-surface-variant">Active Nodes</span>
+<span class="text-secondary font-semibold">42 agents live</span>
+</div>
+<div class="grid grid-cols-12 gap-1 h-2 items-end">
+<div class="bg-primary/40 h-1/3 rounded-xs"></div>
+<div class="bg-primary/50 h-2/3 rounded-xs"></div>
+<div class="bg-primary/60 h-1/2 rounded-xs"></div>
+<div class="bg-primary/50 h-3/4 rounded-xs"></div>
+<div class="bg-primary/70 h-2/3 rounded-xs"></div>
+<div class="bg-primary/80 h-full rounded-xs"></div>
+<div class="bg-secondary/70 h-3/4 rounded-xs"></div>
+<div class="bg-secondary/90 h-full rounded-xs"></div>
+<div class="bg-secondary h-full rounded-xs"></div>
+<div class="bg-secondary h-5/6 rounded-xs"></div>
+<div class="bg-secondary h-full rounded-xs shadow-[0_0_8px_#4cd7f6]"></div>
+<div class="bg-tertiary h-full rounded-xs shadow-[0_0_8px_#4edea3]"></div>
+</div>
+</div>
+</div>
+<!-- Metric 2: Total Token Consumption -->
+<div class="p-4 rounded-xl bg-surface-container-low/80 backdrop-blur-md border border-outline-variant/30 hover:border-secondary/40 transition-all duration-200 group">
+<div class="flex items-center justify-between text-on-surface-variant mb-2">
+<span class="font-code-sm text-code-sm uppercase tracking-wider text-outline font-semibold">Token Consumption</span>
+<div class="p-1.5 rounded-lg bg-surface-container text-secondary group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[18px]">token</span>
+</div>
+</div>
+<div class="flex items-baseline justify-between mb-3">
+<div>
+<span class="font-headline-xl text-headline-xl font-bold text-on-surface tracking-tight">4.2M</span>
+<span class="font-code-sm text-code-sm text-outline ml-1">tokens</span>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-surface-container-high border border-outline-variant/30 text-on-surface font-code-sm text-code-sm">
+              ~$124.50 est.
+            </span>
+</div>
+<!-- Velocity ticker -->
+<div class="space-y-1.5 pt-2 border-t border-outline-variant/20">
+<div class="flex justify-between items-center text-xs font-code-sm">
+<span class="text-on-surface-variant">Throughput Rate</span>
+<span class="text-primary font-semibold">3,420 tokens/sec</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container-lowest rounded-full overflow-hidden">
+<div class="h-full bg-gradient-to-r from-secondary to-primary rounded-full" style="width: 68%"></div>
+</div>
+</div>
+</div>
+<!-- Metric 3: Success Execution Rate -->
+<div class="p-4 rounded-xl bg-surface-container-low/80 backdrop-blur-md border border-outline-variant/30 hover:border-tertiary/40 transition-all duration-200 group">
+<div class="flex items-center justify-between text-on-surface-variant mb-2">
+<span class="font-code-sm text-code-sm uppercase tracking-wider text-outline font-semibold">Success Execution Rate</span>
+<div class="p-1.5 rounded-lg bg-surface-container text-tertiary group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[18px]">verified</span>
+</div>
+</div>
+<div class="flex items-baseline justify-between mb-3">
+<div>
+<span class="font-headline-xl text-headline-xl font-bold text-on-surface tracking-tight">99.4%</span>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-tertiary/10 border border-tertiary/20 text-tertiary font-code-sm text-code-sm font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">arrow_upward</span>
+              +0.2%
+            </span>
+</div>
+<!-- Tasks tally -->
+<div class="space-y-1.5 pt-2 border-t border-outline-variant/20">
+<div class="flex justify-between items-center text-xs font-code-sm">
+<span class="text-on-surface-variant">1,842 completed</span>
+<span class="text-error font-medium">11 retried</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container-lowest rounded-full overflow-hidden flex">
+<div class="h-full bg-tertiary" style="width: 99.4%"></div>
+<div class="h-full bg-error" style="width: 0.6%"></div>
+</div>
+</div>
+</div>
+<!-- Metric 4: Mean Latency -->
+<div class="p-4 rounded-xl bg-surface-container-low/80 backdrop-blur-md border border-outline-variant/30 hover:border-secondary/40 transition-all duration-200 group">
+<div class="flex items-center justify-between text-on-surface-variant mb-2">
+<span class="font-code-sm text-code-sm uppercase tracking-wider text-outline font-semibold">Mean Swarm Latency</span>
+<div class="p-1.5 rounded-lg bg-surface-container text-secondary group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[18px]">speed</span>
+</div>
+</div>
+<div class="flex items-baseline justify-between mb-3">
+<div>
+<span class="font-headline-xl text-headline-xl font-bold text-on-surface tracking-tight">480ms</span>
+<span class="font-code-sm text-code-sm text-outline ml-1">P95: 820ms</span>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-tertiary/10 border border-tertiary/20 text-tertiary font-code-sm text-code-sm font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">arrow_downward</span>
+              -45ms
+            </span>
+</div>
+<!-- TTFT indicator -->
+<div class="space-y-1.5 pt-2 border-t border-outline-variant/20">
+<div class="flex justify-between items-center text-xs font-code-sm">
+<span class="text-on-surface-variant">Time-to-First-Token (TTFT)</span>
+<span class="text-secondary font-semibold">120ms</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container-lowest rounded-full overflow-hidden">
+<div class="h-full bg-gradient-to-r from-tertiary to-secondary rounded-full" style="width: 82%"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 3: Live Autonomous Agents Grid Monitor -->
+<section class="space-y-4">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+<div class="flex items-center gap-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[22px]">smart_toy</span>
+<h2 class="font-headline-md text-headline-md font-bold text-on-surface">Active Autonomous Agents</h2>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-surface-container-high border border-outline-variant/40 font-code-sm text-code-sm text-outline">
+              32 Running / 42 Deployed
+            </span>
+</div>
+<!-- Status Filters -->
+<div class="flex items-center gap-1 bg-surface-container-low p-1 rounded-lg border border-outline-variant/30 font-code-sm text-code-sm">
+<button class="px-2.5 py-1 rounded bg-surface-container-highest text-on-surface font-medium">All 42</button>
+<button class="px-2.5 py-1 text-on-surface-variant hover:text-on-surface transition-colors flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+              Running 32
+            </button>
+<button class="px-2.5 py-1 text-on-surface-variant hover:text-on-surface transition-colors flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+              Paused 6
+            </button>
+<button class="px-2.5 py-1 text-on-surface-variant hover:text-on-surface transition-colors flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+              Monitoring 4
+            </button>
+</div>
+</div>
+<!-- 4 Agent Bento Cards -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+<!-- Agent 1: DataScout-4 (Running) -->
+<div class="p-5 rounded-xl bg-surface-container-low/90 backdrop-blur-lg border border-outline-variant/30 hover:border-tertiary/40 transition-all shadow-sm space-y-4">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high border border-outline-variant/40 flex items-center justify-center text-tertiary shadow-[0_0_12px_rgba(78,222,163,0.15)]">
+<span class="material-symbols-outlined text-[22px]">travel_explore</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<h3 class="font-headline-md text-body-lg font-bold text-on-surface">DataScout-4</h3>
+<span class="px-1.5 py-0.5 rounded bg-surface-container text-outline font-code-sm text-[10px]">#DS-892</span>
+</div>
+<p class="font-code-sm text-code-sm text-outline">Role: Market Intelligence</p>
+</div>
+</div>
+<!-- Status Pill -->
+<span class="px-2.5 py-1 rounded-full bg-tertiary/10 border border-tertiary/30 text-tertiary font-code-sm text-code-sm font-semibold flex items-center gap-1.5 shadow-[0_0_8px_rgba(78,222,163,0.2)]">
+<span class="w-2 h-2 rounded-full bg-tertiary animate-pulse"></span>
+                RUNNING
+              </span>
+</div>
+<!-- Task Detail Box -->
+<div class="p-3 rounded-lg bg-surface-container-lowest/80 border border-outline-variant/20 space-y-2">
+<div class="flex justify-between items-center text-xs font-code-sm">
+<span class="text-on-surface font-medium flex items-center gap-1.5">
+<span class="material-symbols-outlined text-secondary text-[16px]">sync</span>
+                  Current Task: Realtime Competitor Pricing Matrix
+                </span>
+<span class="text-tertiary font-bold">78%</span>
+</div>
+<p class="font-code-sm text-code-sm text-outline truncate">
+                Subtask: Parsing dynamic headless DOM tree (Amazon, Walmart)
+              </p>
+<!-- Progress Bar -->
+<div class="h-1.5 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-gradient-to-r from-secondary to-tertiary rounded-full shadow-[0_0_8px_#4edea3]" style="width: 78%"></div>
+</div>
+</div>
+<!-- Gauges & Telemetry Bar -->
+<div class="grid grid-cols-3 gap-2 py-1 text-center font-code-sm text-code-sm border-t border-b border-outline-variant/20">
+<div>
+<span class="text-outline text-[11px] block">CPU Load</span>
+<span class="text-on-surface font-semibold">42%</span>
+</div>
+<div class="border-x border-outline-variant/20">
+<span class="text-outline text-[11px] block">Memory</span>
+<span class="text-on-surface font-semibold">1.4 / 4 GB</span>
+</div>
+<div>
+<span class="text-outline text-[11px] block">Latency</span>
+<span class="text-secondary font-semibold">310ms</span>
+</div>
+</div>
+<!-- Micro Action Buttons -->
+<div class="flex items-center justify-between pt-1">
+<div class="flex items-center gap-2">
+<button class="px-2.5 py-1 rounded bg-surface-container hover:bg-surface-container-high border border-outline-variant/30 text-on-surface-variant hover:text-on-surface font-code-sm text-code-sm transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px]">pause</span>
+                  Pause
+                </button>
+<button class="px-2.5 py-1 rounded bg-surface-container hover:bg-surface-container-high border border-outline-variant/30 text-on-surface-variant hover:text-on-surface font-code-sm text-code-sm transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px]">terminal</span>
+                  Terminal View
+                </button>
+</div>
+<button class="text-outline hover:text-on-surface text-code-sm font-code-sm flex items-center gap-1">
+                Re-assign <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Agent 2: LeadEnrich-Alpha (Paused) -->
+<div class="p-5 rounded-xl bg-surface-container-low/90 backdrop-blur-lg border border-outline-variant/30 hover:border-amber-400/40 transition-all shadow-sm space-y-4">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high border border-outline-variant/40 flex items-center justify-center text-amber-400 shadow-[0_0_12px_rgba(245,158,11,0.15)]">
+<span class="material-symbols-outlined text-[22px]">contacts</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<h3 class="font-headline-md text-body-lg font-bold text-on-surface">LeadEnrich-Alpha</h3>
+<span class="px-1.5 py-0.5 rounded bg-surface-container text-outline font-code-sm text-[10px]">#LE-201</span>
+</div>
+<p class="font-code-sm text-code-sm text-outline">Role: Sales Automation</p>
+</div>
+</div>
+<!-- Status Pill -->
+<span class="px-2.5 py-1 rounded-full bg-amber-400/10 border border-amber-400/30 text-amber-400 font-code-sm text-code-sm font-semibold flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-amber-400"></span>
+                PAUSED
+              </span>
+</div>
+<!-- Task Detail Box -->
+<div class="p-3 rounded-lg bg-surface-container-lowest/80 border border-outline-variant/20 space-y-2">
+<div class="flex justify-between items-center text-xs font-code-sm">
+<span class="text-on-surface font-medium flex items-center gap-1.5">
+<span class="material-symbols-outlined text-amber-400 text-[16px]">pause_circle</span>
+                  Current Task: CRM Batch Enrichment (Salesforce Sync)
+                </span>
+<span class="text-amber-400 font-bold">100% (Batch 1/3)</span>
+</div>
+<p class="font-code-sm text-code-sm text-outline truncate">
+                Subtask: Waiting for rate-limit window reset (02:14)
+              </p>
+<!-- Progress Bar -->
+<div class="h-1.5 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-amber-400 rounded-full" style="width: 100%"></div>
+</div>
+</div>
+<!-- Gauges & Telemetry Bar -->
+<div class="grid grid-cols-3 gap-2 py-1 text-center font-code-sm text-code-sm border-t border-b border-outline-variant/20">
+<div>
+<span class="text-outline text-[11px] block">CPU Load</span>
+<span class="text-on-surface font-semibold">4%</span>
+</div>
+<div class="border-x border-outline-variant/20">
+<span class="text-outline text-[11px] block">Memory</span>
+<span class="text-on-surface font-semibold">512 MB</span>
+</div>
+<div>
+<span class="text-outline text-[11px] block">Latency</span>
+<span class="text-outline font-semibold">0ms (Idle)</span>
+</div>
+</div>
+<!-- Micro Action Buttons -->
+<div class="flex items-center justify-between pt-1">
+<div class="flex items-center gap-2">
+<button class="px-2.5 py-1 rounded bg-amber-400/20 hover:bg-amber-400/30 border border-amber-400/40 text-amber-300 font-code-sm text-code-sm transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px]">play_arrow</span>
+                  Resume
+                </button>
+<button class="px-2.5 py-1 rounded bg-surface-container hover:bg-surface-container-high border border-outline-variant/30 text-on-surface-variant hover:text-on-surface font-code-sm text-code-sm transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px]">bolt</span>
+                  Force Flush
+                </button>
+</div>
+<button class="text-outline hover:text-on-surface text-code-sm font-code-sm flex items-center gap-1">
+                Edit Config <span class="material-symbols-outlined text-[14px]">tune</span>
+</button>
+</div>
+</div>
+<!-- Agent 3: Sentinel-Sec (Monitoring) -->
+<div class="p-5 rounded-xl bg-surface-container-low/90 backdrop-blur-lg border border-outline-variant/30 hover:border-secondary/40 transition-all shadow-sm space-y-4">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high border border-outline-variant/40 flex items-center justify-center text-secondary shadow-[0_0_12px_rgba(76,215,246,0.15)]">
+<span class="material-symbols-outlined text-[22px]">security</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<h3 class="font-headline-md text-body-lg font-bold text-on-surface">Sentinel-Sec</h3>
+<span class="px-1.5 py-0.5 rounded bg-surface-container text-outline font-code-sm text-[10px]">#SEC-911</span>
+</div>
+<p class="font-code-sm text-code-sm text-outline">Role: Security &amp; Compliance</p>
+</div>
+</div>
+<!-- Status Pill -->
+<span class="px-2.5 py-1 rounded-full bg-secondary/10 border border-secondary/30 text-secondary font-code-sm text-code-sm font-semibold flex items-center gap-1.5 shadow-[0_0_8px_rgba(76,215,246,0.2)]">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+                MONITORING
+              </span>
+</div>
+<!-- Task Detail Box -->
+<div class="p-3 rounded-lg bg-surface-container-lowest/80 border border-outline-variant/20 space-y-2">
+<div class="flex justify-between items-center text-xs font-code-sm">
+<span class="text-on-surface font-medium flex items-center gap-1.5">
+<span class="material-symbols-outlined text-secondary text-[16px]">radar</span>
+                  Current Task: Zero-Day Log Triage &amp; Anomaly Interception
+                </span>
+<span class="text-secondary font-bold">Continuous (99.9%)</span>
+</div>
+<p class="font-code-sm text-code-sm text-outline truncate">
+                Subtask: Analyzing Kubernetes audit stream (Vector-7)
+              </p>
+<!-- Progress Bar -->
+<div class="h-1.5 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-secondary rounded-full shadow-[0_0_8px_#4cd7f6]" style="width: 100%"></div>
+</div>
+</div>
+<!-- Gauges & Telemetry Bar -->
+<div class="grid grid-cols-3 gap-2 py-1 text-center font-code-sm text-code-sm border-t border-b border-outline-variant/20">
+<div>
+<span class="text-outline text-[11px] block">CPU Load</span>
+<span class="text-on-surface font-semibold">18%</span>
+</div>
+<div class="border-x border-outline-variant/20">
+<span class="text-outline text-[11px] block">Memory</span>
+<span class="text-on-surface font-semibold">890 MB</span>
+</div>
+<div>
+<span class="text-outline text-[11px] block">Latency</span>
+<span class="text-tertiary font-semibold">45ms</span>
+</div>
+</div>
+<!-- Micro Action Buttons -->
+<div class="flex items-center justify-between pt-1">
+<div class="flex items-center gap-2">
+<button class="px-2.5 py-1 rounded bg-surface-container hover:bg-surface-container-high border border-outline-variant/30 text-on-surface-variant hover:text-on-surface font-code-sm text-code-sm transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px]">manage_search</span>
+                  Inspect
+                </button>
+<button class="px-2.5 py-1 rounded bg-surface-container hover:bg-surface-container-high border border-outline-variant/30 text-on-surface-variant hover:text-on-surface font-code-sm text-code-sm transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px]">gavel</span>
+                  Ruleset
+                </button>
+</div>
+<button class="text-outline hover:text-on-surface text-code-sm font-code-sm flex items-center gap-1">
+                Log Trace <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Agent 4: CodeSynth-Beta (Running) -->
+<div class="p-5 rounded-xl bg-surface-container-low/90 backdrop-blur-lg border border-outline-variant/30 hover:border-tertiary/40 transition-all shadow-sm space-y-4">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high border border-outline-variant/40 flex items-center justify-center text-primary shadow-[0_0_12px_rgba(208,188,255,0.2)]">
+<span class="material-symbols-outlined text-[22px]">terminal</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<h3 class="font-headline-md text-body-lg font-bold text-on-surface">CodeSynth-Beta</h3>
+<span class="px-1.5 py-0.5 rounded bg-surface-container text-outline font-code-sm text-[10px]">#CS-334</span>
+</div>
+<p class="font-code-sm text-code-sm text-outline">Role: DevOps Synthesis</p>
+</div>
+</div>
+<!-- Status Pill -->
+<span class="px-2.5 py-1 rounded-full bg-tertiary/10 border border-tertiary/30 text-tertiary font-code-sm text-code-sm font-semibold flex items-center gap-1.5 shadow-[0_0_8px_rgba(78,222,163,0.2)]">
+<span class="w-2 h-2 rounded-full bg-tertiary animate-pulse"></span>
+                RUNNING
+              </span>
+</div>
+<!-- Task Detail Box -->
+<div class="p-3 rounded-lg bg-surface-container-lowest/80 border border-outline-variant/20 space-y-2">
+<div class="flex justify-between items-center text-xs font-code-sm">
+<span class="text-on-surface font-medium flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-[16px]">commit</span>
+                  Current Task: Terraform Drift Auto-Remediation
+                </span>
+<span class="text-primary font-bold">54%</span>
+</div>
+<p class="font-code-sm text-code-sm text-outline truncate">
+                Subtask: Generating PR #1042 for VPC Peering
+              </p>
+<!-- Progress Bar -->
+<div class="h-1.5 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-gradient-to-r from-primary to-secondary rounded-full shadow-[0_0_8px_#a078ff]" style="width: 54%"></div>
+</div>
+</div>
+<!-- Gauges & Telemetry Bar -->
+<div class="grid grid-cols-3 gap-2 py-1 text-center font-code-sm text-code-sm border-t border-b border-outline-variant/20">
+<div>
+<span class="text-outline text-[11px] block">CPU Load</span>
+<span class="text-error font-semibold">68%</span>
+</div>
+<div class="border-x border-outline-variant/20">
+<span class="text-outline text-[11px] block">Memory</span>
+<span class="text-on-surface font-semibold">2.1 / 4 GB</span>
+</div>
+<div>
+<span class="text-outline text-[11px] block">Latency</span>
+<span class="text-secondary font-semibold">540ms</span>
+</div>
+</div>
+<!-- Micro Action Buttons -->
+<div class="flex items-center justify-between pt-1">
+<div class="flex items-center gap-2">
+<button class="px-2.5 py-1 rounded bg-surface-container hover:bg-surface-container-high border border-outline-variant/30 text-on-surface-variant hover:text-on-surface font-code-sm text-code-sm transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px]">pause</span>
+                  Pause
+                </button>
+<button class="px-2.5 py-1 rounded bg-surface-container hover:bg-surface-container-high border border-outline-variant/30 text-on-surface-variant hover:text-on-surface font-code-sm text-code-sm transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px]">terminal</span>
+                  Terminal View
+                </button>
+</div>
+<button class="text-error hover:text-error/80 text-code-sm font-code-sm flex items-center gap-1">
+                Abort <span class="material-symbols-outlined text-[14px]">cancel</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 4: Real-Time Cybernetic Agent Thought Stream & Console Activity Log -->
+<section class="rounded-xl bg-surface-container-lowest border border-outline-variant/30 overflow-hidden shadow-2xl">
+<!-- Terminal Header Bar -->
+<div class="px-4 py-2.5 bg-surface-container-low border-b border-outline-variant/20 flex flex-wrap items-center justify-between gap-3">
+<div class="flex items-center gap-3">
+<div class="flex items-center gap-1.5">
+<span class="w-3 h-3 rounded-full bg-error-container/80 border border-error/40"></span>
+<span class="w-3 h-3 rounded-full bg-amber-400/30 border border-amber-400/40"></span>
+<span class="w-3 h-3 rounded-full bg-tertiary/30 border border-tertiary/40"></span>
+</div>
+<div class="h-4 w-px bg-outline-variant/40"></div>
+<div class="flex items-center gap-2">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-tertiary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-tertiary"></span>
+</span>
+<span class="font-code-display text-code-display text-on-surface font-semibold">
+                Agent Thought Stream &amp; Reasoning Trace [LIVE]
+              </span>
+</div>
+</div>
+<!-- Console Controls -->
+<div class="flex items-center gap-2 font-code-sm text-code-sm">
+<!-- Speed toggle -->
+<div class="flex items-center rounded bg-surface-container px-1 py-0.5 border border-outline-variant/30 text-outline">
+<span class="px-1.5 py-0.5 rounded bg-surface-container-highest text-secondary font-bold">1x</span>
+<span class="px-1.5 py-0.5 hover:text-on-surface cursor-pointer">2x</span>
+</div>
+<button class="px-2.5 py-1 rounded bg-surface-container hover:bg-surface-container-high border border-outline-variant/30 text-on-surface-variant hover:text-on-surface transition-colors">
+              Clear
+            </button>
+<button class="px-2.5 py-1 rounded bg-surface-container hover:bg-surface-container-high border border-outline-variant/30 text-secondary hover:text-secondary-fixed transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">download</span>
+              Export JSON
+            </button>
+</div>
+</div>
+<!-- Terminal Output Stream -->
+<div class="p-4 space-y-2.5 font-code-sm text-code-sm bg-[#090c12] max-h-72 overflow-y-auto">
+<!-- Line 1: Thought Step -->
+<div class="flex items-start gap-3 text-on-surface/90 font-code-body hover:bg-white/[0.02] p-1 rounded">
+<span class="text-outline shrink-0">14:02:19.412</span>
+<span class="px-1.5 py-0.2 rounded bg-primary/20 text-primary border border-primary/30 text-[10px] shrink-0 font-bold">DataScout-4</span>
+<div class="flex-1">
+<span class="text-tertiary font-semibold">[THOUGHT]</span>
+<span class="text-on-surface">Evaluating price disparity on SKU-8941 across 3 vendor nodes... confidence score 94.2%.</span>
+</div>
+<span class="text-tertiary text-[11px] font-bold">SUCCESS</span>
+</div>
+<!-- Line 2: Tool Call Invocation -->
+<div class="flex items-start gap-3 text-on-surface/90 font-code-body hover:bg-white/[0.02] p-1 rounded">
+<span class="text-outline shrink-0">14:02:18.980</span>
+<span class="px-1.5 py-0.2 rounded bg-primary/20 text-primary border border-primary/30 text-[10px] shrink-0 font-bold">DataScout-4</span>
+<div class="flex-1 space-y-1">
+<div class="flex items-center gap-2">
+<span class="text-secondary font-semibold">[TOOL_CALL]</span>
+<span class="text-secondary-fixed bg-secondary/10 px-1.5 py-0.5 rounded font-code-sm text-[11px]">browser_navigate(target="https://vendor-api.internal/pricing")</span>
+</div>
+<div class="text-outline text-xs bg-surface-container-lowest/80 p-2 rounded border border-outline-variant/10 font-mono">
+                {"headers": {"Authorization": "Bearer ***REDACTED***", "Accept": "application/json"}, "timeout_ms": 1200}
+              </div>
+</div>
+<span class="text-secondary text-[11px]">200 OK</span>
+</div>
+<!-- Line 3: Sentinel Anomaly Trace -->
+<div class="flex items-start gap-3 text-on-surface/90 font-code-body hover:bg-white/[0.02] p-1 rounded">
+<span class="text-outline shrink-0">14:02:17.310</span>
+<span class="px-1.5 py-0.2 rounded bg-secondary/20 text-secondary border border-secondary/30 text-[10px] shrink-0 font-bold">Sentinel-Sec</span>
+<div class="flex-1">
+<span class="text-secondary font-semibold">[REASONING]</span>
+<span class="text-on-surface">Vector audit log matches CVE-2024-8172 signature pattern. Executing zero-trust containment workflow.</span>
+</div>
+<span class="text-tertiary text-[11px] font-bold">INTERCEPTED</span>
+</div>
+<!-- Line 4: DevOps Auto-PR -->
+<div class="flex items-start gap-3 text-on-surface/90 font-code-body hover:bg-white/[0.02] p-1 rounded">
+<span class="text-outline shrink-0">14:02:15.104</span>
+<span class="px-1.5 py-0.2 rounded bg-primary-container/20 text-primary-fixed border border-primary-container/30 text-[10px] shrink-0 font-bold">CodeSynth-Beta</span>
+<div class="flex-1">
+<span class="text-primary font-semibold">[SYNTHESIS]</span>
+<span class="text-on-surface">Generated 42 lines of HCL Terraform syntax for VPC Peering bridge. Linting passed. Submitting GitHub PR #1042.</span>
+</div>
+<span class="text-tertiary text-[11px] font-bold">PR_OPEN</span>
+</div>
+<!-- Terminal blinking active prompt -->
+<div class="flex items-center gap-2 pt-2 text-outline text-xs font-mono">
+<span class="text-tertiary">nexus-swarm@node-42:~$</span>
+<span class="text-on-surface-variant">listening for autonomous telemetry events...</span>
+<span class="w-2 h-4 bg-secondary animate-pulse inline-block"></span>
+</div>
+</div>
+</section>
+</main>
+</div>
+</body></html>
