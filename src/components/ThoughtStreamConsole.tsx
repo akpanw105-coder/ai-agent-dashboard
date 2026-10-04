@@ -48,20 +48,20 @@ export const ThoughtStreamConsole: React.FC<ThoughtStreamConsoleProps> = ({
   return (
     <div className="rounded-xl bg-[#0c101a] border border-white/[0.08] overflow-hidden shadow-2xl backdrop-blur-2xl">
       {/* Console Header Bar */}
-      <div className="flex items-center justify-between px-4 py-3 bg-[#111726]/90 border-b border-white/[0.08]">
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1.5">
+      <div className="flex flex-wrap items-center justify-between gap-2 px-3 sm:px-4 py-2.5 sm:py-3 bg-[#111726]/90 border-b border-white/[0.08]">
+        <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+          <div className="hidden xs:flex items-center gap-1.5 flex-shrink-0">
             <span className="w-2.5 h-2.5 rounded-full bg-rose-500/80"></span>
             <span className="w-2.5 h-2.5 rounded-full bg-amber-500/80"></span>
             <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80"></span>
           </div>
-          <div className="h-4 w-px bg-white/10"></div>
-          <div className="flex items-center gap-2">
-            <Terminal className="w-4 h-4 text-cyan-400" />
-            <span className="text-xs font-mono font-bold text-gray-200">
-              Agent Thought Stream & Reasoning Trace
+          <div className="hidden xs:block h-4 w-px bg-white/10"></div>
+          <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+            <Terminal className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-cyan-400 flex-shrink-0" />
+            <span className="text-[11px] sm:text-xs font-mono font-bold text-gray-200 truncate">
+              Reasoning Trace Stream
             </span>
-            <span className="flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-mono bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+            <span className="flex items-center gap-1 px-1.5 py-0.5 rounded text-[9px] sm:text-[10px] font-mono bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex-shrink-0">
               <span className={`w-1.5 h-1.5 rounded-full bg-emerald-400 ${isStreaming ? "animate-pulse" : ""}`}></span>
               {isStreaming ? "LIVE" : "PAUSED"}
             </span>
@@ -69,59 +69,59 @@ export const ThoughtStreamConsole: React.FC<ThoughtStreamConsoleProps> = ({
         </div>
 
         {/* Speed Controls & Actions */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
           <button
             onClick={() => setSpeed(speed === "1x" ? "2x" : "1x")}
-            className="px-2 py-0.5 rounded text-[10px] font-mono bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10"
+            className="px-2 py-1 rounded text-[10px] font-mono bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 min-h-[30px]"
           >
             {speed}
           </button>
 
           <button
             onClick={() => setIsStreaming(!isStreaming)}
-            className="p-1.5 rounded text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
+            className="p-1.5 rounded text-gray-400 hover:text-white hover:bg-white/5 transition-colors min-h-[30px] min-w-[30px] flex items-center justify-center border border-white/5"
             title={isStreaming ? "Pause Live Stream" : "Resume Stream"}
           >
             {isStreaming ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
           </button>
 
           <button
-            className="flex items-center gap-1 px-2.5 py-1 rounded text-xs font-mono bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 transition-colors"
+            className="flex items-center gap-1 px-2 sm:px-2.5 py-1 rounded text-xs font-mono bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 transition-colors min-h-[30px]"
             title="Export JSON Logs"
           >
-            <Download className="w-3 h-3 text-gray-400" />
-            <span className="text-[11px] hidden sm:inline">Export</span>
+            <Download className="w-3 h-3 text-gray-400 flex-shrink-0" />
+            <span className="text-[10px] sm:text-[11px]">Export</span>
           </button>
         </div>
       </div>
 
       {/* Terminal Stream Feed */}
-      <div className="p-3 font-mono text-xs max-h-[380px] overflow-y-auto space-y-2 select-text">
+      <div className="p-2 sm:p-3 font-mono text-xs max-h-[380px] overflow-y-auto space-y-2 select-text">
         {logs.map((log) => {
           const isSelected = selectedLogId === log.id;
           return (
             <div
               key={log.id}
               onClick={() => onSelectLog(log)}
-              className={`p-2.5 rounded-lg border transition-all cursor-pointer ${
+              className={`p-2 sm:p-2.5 rounded-lg border transition-all cursor-pointer ${
                 isSelected
                   ? "bg-violet-950/40 border-violet-500/60 shadow-glow-violet/20"
                   : "bg-[#111726]/40 hover:bg-[#141c2e]/70 border-white/[0.04] hover:border-white/10"
               }`}
             >
-              <div className="flex items-center justify-between gap-2 mb-1.5">
-                <div className="flex items-center gap-2 flex-wrap">
-                  <span className="text-[11px] text-gray-500 font-mono">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-2 mb-1.5">
+                <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap min-w-0">
+                  <span className="text-[10px] sm:text-[11px] text-gray-500 font-mono">
                     {log.timestamp}
                   </span>
-                  <span className="px-1.5 py-0.5 rounded text-[10px] font-mono bg-white/5 text-violet-300 font-semibold border border-white/10">
+                  <span className="px-1.5 py-0.5 rounded text-[9px] sm:text-[10px] font-mono bg-white/5 text-violet-300 font-semibold border border-white/10 truncate max-w-[120px]">
                     {log.agentName}
                   </span>
-                  <span className={`px-1.5 py-0.5 rounded text-[10px] font-mono uppercase tracking-wider font-bold border ${getBadgeColor(log.eventType)}`}>
+                  <span className={`px-1.5 py-0.5 rounded text-[9px] sm:text-[10px] font-mono uppercase tracking-wider font-bold border ${getBadgeColor(log.eventType)}`}>
                     [{log.eventType}]
                   </span>
                 </div>
-                <div className="flex items-center gap-3 text-[11px] text-gray-400">
+                <div className="flex items-center gap-2.5 text-[10px] sm:text-[11px] text-gray-400 flex-shrink-0">
                   <span className="text-gray-400 flex items-center gap-1">
                     <Clock className="w-3 h-3 text-gray-500" />
                     {log.durationMs}ms
@@ -130,13 +130,13 @@ export const ThoughtStreamConsole: React.FC<ThoughtStreamConsoleProps> = ({
                 </div>
               </div>
 
-              <div className="text-xs text-gray-300 pl-1 font-mono leading-relaxed">
+              <div className="text-[11px] sm:text-xs text-gray-300 pl-0.5 sm:pl-1 font-mono leading-relaxed break-words">
                 {log.summary}
               </div>
 
               {log.confidence && (
-                <div className="mt-2 flex items-center gap-2 text-[10px] text-gray-400 pl-1">
-                  <Sparkles className="w-3 h-3 text-cyan-400" />
+                <div className="mt-1.5 sm:mt-2 flex items-center gap-1.5 text-[10px] text-gray-400 pl-0.5 sm:pl-1 flex-wrap">
+                  <Sparkles className="w-3 h-3 text-cyan-400 flex-shrink-0" />
                   <span>Cognitive Confidence:</span>
                   <span className="text-emerald-400 font-bold">{log.confidence}%</span>
                 </div>

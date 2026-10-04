@@ -43,17 +43,18 @@ export const TraceInspector: React.FC<TraceInspectorProps> = ({ log }) => {
   return (
     <div className="flex flex-col h-full rounded-xl bg-[#0c101a] border border-white/[0.08] overflow-hidden shadow-2xl backdrop-blur-2xl">
       {/* Top Inspector Bar */}
-      <div className="p-4 bg-[#111726]/90 border-b border-white/[0.08]">
-        <div className="flex items-center justify-between gap-2 mb-2">
-          <div className="flex items-center gap-2">
+      <div className="p-3 sm:p-4 bg-[#111726]/90 border-b border-white/[0.08]">
+        <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
+          <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
             <span className="text-xs font-mono text-gray-400">Trace ID:</span>
             <span className="px-2 py-0.5 rounded text-xs font-mono font-bold text-violet-300 bg-violet-950/40 border border-violet-500/30">
               {log.id}
             </span>
             <button
               onClick={handleCopy}
-              className="p-1 rounded hover:bg-white/10 text-gray-400 hover:text-white transition-colors"
+              className="p-1.5 rounded hover:bg-white/10 text-gray-400 hover:text-white transition-colors"
               title="Copy Trace JSON"
+              aria-label="Copy Trace JSON"
             >
               {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
             </button>
@@ -66,22 +67,22 @@ export const TraceInspector: React.FC<TraceInspectorProps> = ({ log }) => {
           </div>
         </div>
 
-        <div className="flex items-center justify-between text-xs font-mono text-gray-400">
+        <div className="flex flex-wrap items-center justify-between text-xs font-mono text-gray-400 gap-2">
           <div>
             <span>Agent: </span>
             <span className="text-white font-semibold">{log.agentName}</span>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5 sm:gap-3">
             <span>Latency: <strong className="text-cyan-400">{log.durationMs}ms</strong></span>
             <span>Cost: <strong className="text-emerald-400">{log.cost}</strong></span>
           </div>
         </div>
 
-        {/* Tab Navigation */}
-        <div className="flex items-center gap-1 mt-4 pt-3 border-t border-white/[0.06] text-xs font-mono">
+        {/* Tab Navigation - Scrollable on small screens */}
+        <div className="flex items-center gap-1.5 mt-3 pt-3 border-t border-white/[0.06] text-xs font-mono overflow-x-auto pb-1 scrollbar-thin">
           <button
             onClick={() => setActiveTab("reasoning")}
-            className={`px-3 py-1.5 rounded-lg transition-all ${
+            className={`px-3 py-1.5 rounded-lg whitespace-nowrap transition-all ${
               activeTab === "reasoning"
                 ? "bg-violet-600/30 text-violet-300 border border-violet-500/40 font-bold"
                 : "text-gray-400 hover:text-white hover:bg-white/5"
@@ -91,7 +92,7 @@ export const TraceInspector: React.FC<TraceInspectorProps> = ({ log }) => {
           </button>
           <button
             onClick={() => setActiveTab("context")}
-            className={`px-3 py-1.5 rounded-lg transition-all ${
+            className={`px-3 py-1.5 rounded-lg whitespace-nowrap transition-all ${
               activeTab === "context"
                 ? "bg-violet-600/30 text-violet-300 border border-violet-500/40 font-bold"
                 : "text-gray-400 hover:text-white hover:bg-white/5"
@@ -101,7 +102,7 @@ export const TraceInspector: React.FC<TraceInspectorProps> = ({ log }) => {
           </button>
           <button
             onClick={() => setActiveTab("payload")}
-            className={`px-3 py-1.5 rounded-lg transition-all ${
+            className={`px-3 py-1.5 rounded-lg whitespace-nowrap transition-all ${
               activeTab === "payload"
                 ? "bg-violet-600/30 text-violet-300 border border-violet-500/40 font-bold"
                 : "text-gray-400 hover:text-white hover:bg-white/5"
@@ -111,7 +112,7 @@ export const TraceInspector: React.FC<TraceInspectorProps> = ({ log }) => {
           </button>
           <button
             onClick={() => setActiveTab("waterfall")}
-            className={`px-3 py-1.5 rounded-lg transition-all ${
+            className={`px-3 py-1.5 rounded-lg whitespace-nowrap transition-all ${
               activeTab === "waterfall"
                 ? "bg-violet-600/30 text-violet-300 border border-violet-500/40 font-bold"
                 : "text-gray-400 hover:text-white hover:bg-white/5"
@@ -192,17 +193,17 @@ export const TraceInspector: React.FC<TraceInspectorProps> = ({ log }) => {
                     ></div>
                   </div>
                   {/* Legend */}
-                  <div className="flex items-center gap-4 mt-3 text-[11px] text-gray-400">
+                  <div className="flex flex-wrap items-center gap-3 sm:gap-4 mt-3 text-[10px] sm:text-[11px] text-gray-400">
                     <span className="flex items-center gap-1.5">
-                      <span className="w-2 h-2 rounded-full bg-violet-500"></span>
+                      <span className="w-2 h-2 rounded-full bg-violet-500 flex-shrink-0"></span>
                       System ({log.contextTokens.system})
                     </span>
                     <span className="flex items-center gap-1.5">
-                      <span className="w-2 h-2 rounded-full bg-cyan-500"></span>
+                      <span className="w-2 h-2 rounded-full bg-cyan-500 flex-shrink-0"></span>
                       History ({log.contextTokens.history})
                     </span>
                     <span className="flex items-center gap-1.5">
-                      <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                      <span className="w-2 h-2 rounded-full bg-emerald-500 flex-shrink-0"></span>
                       Tools ({log.contextTokens.tools})
                     </span>
                   </div>
@@ -212,7 +213,7 @@ export const TraceInspector: React.FC<TraceInspectorProps> = ({ log }) => {
                   <span className="text-[10px] text-gray-400 uppercase tracking-wider block mb-1">
                     System Instructions Active
                   </span>
-                  <p className="text-gray-300 text-xs leading-relaxed font-mono">
+                  <p className="text-gray-300 text-xs leading-relaxed font-mono break-words">
                     You are NexusAI Operator Autonomous Agent Node {log.agentId}. Follow zero-trust constraint policies, optimize for deterministic consensus, and maintain strict token economy boundaries.
                   </p>
                 </div>
@@ -230,11 +231,11 @@ export const TraceInspector: React.FC<TraceInspectorProps> = ({ log }) => {
               <>
                 <div>
                   <span className="text-[11px] text-gray-400 font-bold block mb-1.5">
-                    Function Invoked: <code className="text-cyan-300">{log.toolDetails.name}</code>
+                    Function Invoked: <code className="text-cyan-300 break-all">{log.toolDetails.name}</code>
                   </span>
-                  <div className="p-3 rounded-lg bg-[#080b12] border border-white/10 text-gray-200 overflow-x-auto">
+                  <div className="p-2.5 sm:p-3 rounded-lg bg-[#080b12] border border-white/10 text-gray-200 overflow-x-auto max-w-full">
                     <span className="text-[10px] text-gray-500 uppercase block mb-1">Arguments:</span>
-                    <pre className="text-cyan-300 text-xs">
+                    <pre className="text-cyan-300 text-[11px] sm:text-xs whitespace-pre-wrap sm:whitespace-pre break-all sm:break-normal">
                       {JSON.stringify(log.toolDetails.args, null, 2)}
                     </pre>
                   </div>
@@ -244,8 +245,8 @@ export const TraceInspector: React.FC<TraceInspectorProps> = ({ log }) => {
                   <span className="text-[11px] text-gray-400 font-bold block mb-1.5">
                     Execution Response Payload:
                   </span>
-                  <div className="p-3 rounded-lg bg-[#080b12] border border-white/10 text-gray-200 overflow-x-auto">
-                    <pre className="text-emerald-300 text-xs">
+                  <div className="p-2.5 sm:p-3 rounded-lg bg-[#080b12] border border-white/10 text-gray-200 overflow-x-auto max-w-full">
+                    <pre className="text-emerald-300 text-[11px] sm:text-xs whitespace-pre-wrap sm:whitespace-pre break-all sm:break-normal">
                       {JSON.stringify(log.toolDetails.response, null, 2)}
                     </pre>
                   </div>
